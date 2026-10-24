@@ -47,8 +47,6 @@
     include('./templates/modalTweet.php');
     include('./templates/modalReply.php');
     $pathprofile = file_exists("./images/$img") ? $img : "user.png";
-
-    echo $pathprofile
  ?>
     
     
