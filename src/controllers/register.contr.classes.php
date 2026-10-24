@@ -27,7 +27,6 @@ class RegisterContr extends Register{
 
         // check for empty input you know just to be sure
         if($this->EmptyInput()){
-            echo "inside empty input";
             header('location:../../templates/register.php?error=emptyInput');
             exit();
         } 
@@ -43,18 +42,15 @@ class RegisterContr extends Register{
         }
         // password need to be the same -ç-
         if($this->SamePassword()){
-            echo "inside same password";
             header('location:../../templates/register.php?error=passwordnotthesame');
             exit();
         }
         // check if user not already register in the db 
-        if($this->CheckUser($this->email)){
-            echo "inside checkuser";
+        if($this->CheckUser($this->mail)){
             header('location:../../templates/register.php?error=useralreadyregister');
             exit();
         }
         // then we procede to the register
-        echo "just before the set User";
         $this->setUser($this->mail,$this->password,$this->username,$this->passwordRepeat,$this->at_user_name,$this->city,$this->birthdate);}
 
     private function EmptyInput(){
@@ -70,8 +66,6 @@ class RegisterContr extends Register{
     private function SamePassword(){
         $result=false;
         if($this->password!=$this->passwordRepeat){
-            echo $this->password;
-            echo $this->passwordRepeat;
             $result=true;
         }
         return $result;

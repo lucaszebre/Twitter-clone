@@ -38,7 +38,6 @@ class Login extends Dbh{
             $_SESSION['at_user_name'] = $result[0]["at_user_name"];
             $stmt=null;
 
-            var_dump($_SESSION);
 
            
             

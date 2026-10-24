@@ -14,17 +14,14 @@ class Register extends Dbh{
             header('location:../../register.php?error=stmtfailed');
             exit();
         }
-        echo "\nstep3";
     }
 
 
         protected function CheckUser($email){
-            echo "beginning of check user";
             $stmt = $this->connect()->prepare("SELECT * FROM  user WHERE mail = ?;");
             $stmt->execute(array($email));
 
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "execute check user";
 
             if(count($data ) > 0) {
                 return true;
@@ -36,12 +33,10 @@ class Register extends Dbh{
         } 
         
         protected function CheckUserName($username){
-            echo "beginning of check user";
             $stmt = $this->connect()->prepare("SELECT * FROM  user WHERE username = ?;");
             $stmt->execute(array($username));
 
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "execute check user";
 
             if(count($data ) > 0) {
                 return true;
@@ -53,12 +48,10 @@ class Register extends Dbh{
         } 
         
         protected function CheckAtUserName($at_user_name){
-            echo "beginning of check user";
             $stmt = $this->connect()->prepare("SELECT * FROM  user WHERE at_user_name = ?;");
             $stmt->execute(array($at_user_name));
 
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo "execute check user";
 
             if(count($data ) > 0) {
                 return true;

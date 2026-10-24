@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
   <script src="./assets/checkpath.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -47,8 +47,6 @@
     include('./templates/modalTweet.php');
     include('./templates/modalReply.php');
     $pathprofile = file_exists("./images/$img") ? $img : "user.png";
-
-    echo $pathprofile
  ?>
     
     
