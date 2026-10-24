@@ -10,8 +10,9 @@ class Dbh{
             // Read from the environment (see .env.example); fall back to the original local defaults.
             $servername = getenv('DB_HOST') ?: "localhost";
             $port = getenv('DB_PORT') ?: "3306";
-            $username = getenv('DB_USER') ?: "lucas";
-            $password = getenv('DB_PASSWORD') ?: "root";
+            $username = getenv('DB_USER') !== false ? getenv('DB_USER') : "lucas";
+            // An explicitly empty DB_PASSWORD is valid (common on local MySQL), so only fall back when unset.
+            $password = getenv('DB_PASSWORD') !== false ? getenv('DB_PASSWORD') : "root";
             $db = getenv('DB_NAME') ?: "twitter";
             $dbh = new PDO("mysql:host=$servername;port=$port;dbname=$db;charset=utf8mb4", $username, $password);
             return $dbh;
