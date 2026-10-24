@@ -40,6 +40,8 @@ Requirements: PHP 8.x with the `pdo_mysql` extension, a MySQL 8 server.
 
 4. Open <http://localhost:8000>, register an account and log in. The seed users in `globe.sql` cannot be used to log in (their password fields are placeholders).
 
+   Tip: Apache/XAMPP enable `output_buffering=4096` by default and the code relies on it in places (output before `header()` redirects). If a redirect ever fails under the built-in server, start it with `php -d output_buffering=4096 -S localhost:8000`.
+
 ### With Docker
 
 The official `php:*-cli` image ships without `pdo_mysql`, so build a small image first. The two containers share a Docker network:
@@ -48,7 +50,7 @@ The official `php:*-cli` image ships without `pdo_mysql`, so build a small image
 docker network create tcnet
 docker run --rm -d --name tc-db --network tcnet \
   -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=twitter mysql:8
-until docker exec tc-db mysqladmin -uroot -proot ping --silent 2>/dev/null; do sleep 2; done
+until docker exec tc-db mysqladmin -h127.0.0.1 -uroot -proot ping --silent 2>/dev/null; do sleep 2; done
 docker exec -i tc-db mysql -uroot -proot twitter < globe.sql
 
 printf 'FROM php:8.3-cli\nRUN docker-php-ext-install pdo_mysql\n' | docker build -t twitter-clone-php -
