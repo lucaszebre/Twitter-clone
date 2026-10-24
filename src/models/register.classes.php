@@ -14,7 +14,6 @@ class Register extends Dbh{
             header('location:../../register.php?error=stmtfailed');
             exit();
         }
-        echo "\nstep3";
     }
 
 
