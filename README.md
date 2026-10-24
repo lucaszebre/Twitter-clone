@@ -35,12 +35,12 @@ Requirements: PHP 8.x with the `pdo_mysql` extension, a MySQL 8 server.
 
    ```sh
    set -a; . ./.env; set +a
-   php -S localhost:8000
+   php -d output_buffering=4096 -S localhost:8000
    ```
 
-4. Open <http://localhost:8000>, register an account and log in. The seed users in `globe.sql` cannot be used to log in (their password fields are placeholders).
+   The `-d output_buffering=4096` flag matters: the pages print HTML before calling `session_start()` / `header()`, which only works with output buffering on (Apache/XAMPP enable it by default; the built-in server does not).
 
-   Tip: Apache/XAMPP enable `output_buffering=4096` by default and the code relies on it in places (output before `header()` redirects). If a redirect ever fails under the built-in server, start it with `php -d output_buffering=4096 -S localhost:8000`.
+4. Open <http://localhost:8000>, register an account and log in. The seed users in `globe.sql` cannot be used to log in (their password fields are placeholders).
 
 ### With Docker
 
@@ -56,7 +56,7 @@ docker exec -i tc-db mysql -uroot -proot twitter < globe.sql
 printf 'FROM php:8.3-cli\nRUN docker-php-ext-install pdo_mysql\n' | docker build -t twitter-clone-php -
 docker run --rm -it --name tc-web --network tcnet -v "$PWD":/app -w /app -p 8000:8000 \
   -e DB_HOST=tc-db -e DB_USER=root -e DB_PASSWORD=root -e DB_NAME=twitter \
-  twitter-clone-php php -S 0.0.0.0:8000
+  twitter-clone-php php -d output_buffering=4096 -S 0.0.0.0:8000
 ```
 
 ## Status
