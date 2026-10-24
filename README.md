@@ -42,15 +42,18 @@ Requirements: PHP 8.x with the `pdo_mysql` extension, a MySQL 8 server.
 
 ### With Docker
 
-The official `php:*-cli` image ships without `pdo_mysql`, so build a small image first:
+The official `php:*-cli` image ships without `pdo_mysql`, so build a small image first. The two containers share a Docker network:
 
 ```sh
-docker run --rm -d --name tc-db -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=twitter -p 3306:3306 mysql:8
+docker network create tcnet
+docker run --rm -d --name tc-db --network tcnet \
+  -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=twitter mysql:8
+until docker exec tc-db mysqladmin -uroot -proot ping --silent 2>/dev/null; do sleep 2; done
 docker exec -i tc-db mysql -uroot -proot twitter < globe.sql
 
 printf 'FROM php:8.3-cli\nRUN docker-php-ext-install pdo_mysql\n' | docker build -t twitter-clone-php -
-docker run --rm -it -v "$PWD":/app -w /app -p 8000:8000 \
-  -e DB_HOST=host.docker.internal -e DB_USER=root -e DB_PASSWORD=root -e DB_NAME=twitter \
+docker run --rm -it --name tc-web --network tcnet -v "$PWD":/app -w /app -p 8000:8000 \
+  -e DB_HOST=tc-db -e DB_USER=root -e DB_PASSWORD=root -e DB_NAME=twitter \
   twitter-clone-php php -S 0.0.0.0:8000
 ```
 
