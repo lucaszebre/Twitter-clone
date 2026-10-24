@@ -7,11 +7,13 @@ class Dbh{
     protected function connect(){
       
         try {
-            $servername = "localhost";
-            $username = "lucas";
-            $password = "root";
-            $db = "twitter";
-            $dbh = new PDO('mysql:host=localhost;dbname=twitter', $username, $password);
+            // Read from the environment (see .env.example); fall back to the original local defaults.
+            $servername = getenv('DB_HOST') ?: "localhost";
+            $port = getenv('DB_PORT') ?: "3306";
+            $username = getenv('DB_USER') ?: "lucas";
+            $password = getenv('DB_PASSWORD') ?: "root";
+            $db = getenv('DB_NAME') ?: "twitter";
+            $dbh = new PDO("mysql:host=$servername;port=$port;dbname=$db;charset=utf8mb4", $username, $password);
             return $dbh;
         } catch (PDOException $e) {
             print "Error " . $e->getMessage();
